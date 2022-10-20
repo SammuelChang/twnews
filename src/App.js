@@ -9,6 +9,7 @@ function App() {
       <GlobalStyled />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/:category" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

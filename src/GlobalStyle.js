@@ -7,11 +7,18 @@ const GlobalStyle = createGlobalStyle`
     margin: none;
   }
 
-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-}
+  button {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+    border: none;
+    outline: none;
+    display: block;
+  }
 `;
  
 export default GlobalStyle;

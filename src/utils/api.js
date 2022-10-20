@@ -1,7 +1,9 @@
 const api = {
     hostname: 'https://newsapi.org/v2',
-    getNews() {
-      return fetch(`${this.hostname}/top-headlines?country=tw&apiKey=f8211c21c46640a8b51ccb7d9ff24c5c`)
+    getNews(category) {
+      const categoryParam = category ? `&category=${category}` : '';
+      console.log(`${this.hostname}/top-headlines?country=tw${categoryParam}&apiKey=f8211c21c46640a8b51ccb7d9ff24c5c`);
+      return fetch(`${this.hostname}/top-headlines?country=tw${categoryParam}&apiKey=f8211c21c46640a8b51ccb7d9ff24c5c`)
       .then((response) => response.json()
       );
     },

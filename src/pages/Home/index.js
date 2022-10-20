@@ -1,5 +1,6 @@
 import Header from "../../components/Header";
 import styled from 'styled-components/macro'
+import { useParams } from "react-router-dom";
 import api from '../../utils/api'
 import { useEffect, useState } from "react";
 
@@ -7,7 +8,7 @@ const Wrapper = styled.div`
 padding: 0 30px;
 `
 
-const List = styled.ul`
+const NewsContainer = styled.ul`
 height: 1000px;
 width: 100%;
 display: flex;
@@ -61,6 +62,7 @@ font-size: 0.8rem;
 `
 
 function ellipsis(max, str) {
+  if (typeof str !== 'string') return  '';
   const maxCount = max;
   const len = str.length;
   if (len < maxCount) return str;
@@ -73,37 +75,44 @@ function timeAdjust(str){
 
 function Home() {
   const [news, setNews] = useState([]);
+  let { category } = useParams();
+  
+  async function getNews(category){
+    try {
+    const data = await api.getNews(category)
+    const arrangeData = data.articles
+                        .filter(item => item.urlToImage !== "https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png" && 
+                                        item.urlToImage !== null)
+                        .sort((a, b) => a.PublishtAt - b.publishedAt)
+    setNews(arrangeData);
+  } catch (error){
+    alert('新聞資料取得異常，請重新嘗試！');
+    console.log(error);
+  }
+  }
 
   useEffect(()=>{
-    async function getNews(){
-      try {
-      const data = await api.getEverything()
-      const arrangeData = data.articles
-                          .filter(item => item.urlToImage !== "https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png")
-                          .sort((a, b) => a.PublishtAt - b.publishedAt)
-      setNews(arrangeData);
-      console.log(arrangeData);
-    } catch (error){
-      alert('新聞資料取得異常，請重新嘗試！');
-      console.log(error);
+    if (category){
+      getNews(category);
+    } else {
+      getNews();
     }
-    }
-    getNews();
-  },[])
+  },[category])
 
   return (
     <Wrapper>
       <Header/>
-      <List>
-        {news?.map((item,index) => (
+      <NewsContainer>
+        {news?.map((item,index) => {
+          return (
           <Item key={index}>
             <Photo background={item.urlToImage}></Photo>
             <Title>{ellipsis(50, item.title)}</Title>
             <Description>{ellipsis(80, item.description)}</Description>
             <PublishtAt>{timeAdjust(item.publishedAt)}</PublishtAt>
           </Item>
-        ))}
-      </List>
+        )})}
+      </NewsContainer>
     </Wrapper>
   );
 }
