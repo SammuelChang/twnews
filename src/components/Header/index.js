@@ -58,6 +58,7 @@ display: flex;
 justify-content: space-evenly;
 padding: 20px 0;
 border-bottom: 1px solid #bfbcb4;
+margin-right: 100px;
 `
 
 const Item = styled.button`
@@ -71,10 +72,10 @@ border-radius: 10px;
 padding: 2.5px 5px;
 
 ${props => props.active && css`
-color: #3a5a40;
+color: white;
 font-weight: 900;
+background: #417449;
 `}
-
 
 &:hover{
   box-shadow: 0 0 11px rgba(33,33,33,.2); 
@@ -104,45 +105,45 @@ opacity: ${props => props.activate ? 1 : 0.5};
 `
 
 function Header() {
-  const newsCategories = [{text:'商 業', param:'business'},
-                          {text:'娛 樂', param:'entertainment'},
-                          {text:'生 活', param:'general'},
-                          {text:'健 康', param:'health'},
-                          {text:'科 學', param:'science'},
-                          {text:'科 技', param:'technology'},
-                          {text:'運 動', param:'sport'}]
+  const newsCategories = [{ text: '商 業', param: 'business' },
+  { text: '娛 樂', param: 'entertainment' },
+  { text: '生 活', param: 'general' },
+  { text: '健 康', param: 'health' },
+  { text: '科 學', param: 'science' },
+  { text: '科 技', param: 'technology' },
+  { text: '運 動', param: 'sport' }]
   let { category } = useParams();
 
-    return (
-     <Wrapper>
-        <LogoBar>
-          <Link to='/'>
-            <Logo />
-          </Link>
-          <Personal>
-              <CheckButton>🔍</CheckButton>
-              <CheckButton>🔖</CheckButton>
-              <CheckButton>👤</CheckButton>
-            </Personal>
-        </LogoBar>
-        <NavBar>
-          <Category>
-          {newsCategories.map((item, index) => 
+  return (
+    <Wrapper>
+      <LogoBar>
+        <Link to='/'>
+          <Logo />
+        </Link>
+        <Personal>
+          <CheckButton>🔍</CheckButton>
+          <CheckButton>🔖</CheckButton>
+          <CheckButton>👤</CheckButton>
+        </Personal>
+      </LogoBar>
+      <NavBar>
+        <Category>
+          {newsCategories.map((item, index) =>
             <Link to={`/${item.param}`} key={index} >
               <Item key={index} style={{ fontSize: "1.2rem" }} active={category === item.param}>
                 {item.text}
               </Item>
             </Link>
           )}
-          <Item width="100px"/>
+          {/* <Item width="100px"/> */}
           <SwitchContainer>
             <SwitchMode title="列表模式" img={list}></SwitchMode>
             <SwitchMode title="圖磚模式" img={bricks} activate></SwitchMode>
           </SwitchContainer>
-          </Category>
-        </NavBar>
-     </Wrapper>
-    );
-  }
-  
+        </Category>
+      </NavBar>
+    </Wrapper>
+  );
+}
+
 export default Header;
