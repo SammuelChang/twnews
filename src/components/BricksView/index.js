@@ -1,6 +1,10 @@
 import { useContext } from 'react';
 import styled from 'styled-components/macro'
 import ModalControl from '../../components/Context';
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import PlaceholderImage from "../../images/placeholder.png";
+import 'react-lazy-load-image-component/src/effects/blur.css';
+
 
 const Item = styled.li`
 width: 400px;
@@ -8,20 +12,6 @@ height: 450px;
 list-style: none;
 margin: 10px 15px;
 overflow: hidden;
-`
-
-const Photo = styled.div`
-height: 200px;
-width: 100%;
-background: ${props => `url(${props.background}) no-repeat top center`};
-background-size: cover;
-opacity: 0.7;
-transition: .3s ease-in-out;
-cursor: pointer;
-
-&:hover{
-  opacity: 1;
-}
 `
 
 const Title = styled.div`
@@ -60,11 +50,20 @@ function timeAdjust(str) {
 
 function BricksView(item) {
   const { news } = item;
-  const [setModal, modal, setModalNews, modalNews] = useContext(ModalControl);
+  const [setModal, modal, setModalNews] = useContext(ModalControl);
 
   return (
     <Item>
-      <Photo background={news.urlToImage} onClick={() => { setModal(!modal); setModalNews([news]); }}></Photo>
+      <LazyLoadImage
+        src={news.urlToImage} onClick={() => { setModal(!modal); setModalNews([news]); }}
+        width={"100%"}
+        height={200}
+        style={{ objectFit: 'cover', objectPosition: 'top' }}
+        alt="Image Alt"
+        threshold={500}
+        placeholderSrc={PlaceholderImage}
+        effect="blur"
+      />
       <Title>{ellipsis(50, news.title)}</Title>
       <Description>{ellipsis(80, news.description)}</Description>
       <PublishtAt>{timeAdjust(news.publishedAt)}</PublishtAt>

@@ -5,7 +5,6 @@ import { useContext, useEffect } from 'react';
 import ModalControl from '../../components/Context';
 
 const Modal = styled.div`
-// display: none; /* Hidden by default */
 position: fixed; /* Stay in place */
 z-index: 1; /* Sit on top */
 left: 0;
@@ -107,19 +106,30 @@ const NewsOriginalPage = styled.button`
 function ContentView(item) {
   const [setModal, modal] = useContext(ModalControl);
 
-
-  function ModalClickHandler(e) {
+  function modalClickHandler(e) {
     e.stopPropagation();
     const target = e.target.className;
     if (target.includes('Modal') || target.includes('Close')) {
       setModal(!modal)
     }
+
+    if (e.key === 'Escape') {
+      setModal(false);
+    }
   }
 
+  useEffect(() => {
+    window.addEventListener("keydown", modalClickHandler, false);
+
+    return () => {
+      window.removeEventListener("keydown", modalClickHandler, false);
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <Modal onClick={ModalClickHandler}>
-      <Content onClick={ModalClickHandler}>
-        <Close onClick={ModalClickHandler}></Close>
+    <Modal onClick={modalClickHandler} >
+      <Content onClick={modalClickHandler}>
+        <Close onClick={modalClickHandler}></Close>
         <Title>
           {item.item[0].title}
         </Title>

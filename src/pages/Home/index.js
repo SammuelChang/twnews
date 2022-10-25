@@ -6,6 +6,7 @@ import api from '../../utils/api'
 import { useEffect, useState } from "react";
 import BricksView from '../../components/BricksView'
 import ModalControl from '../../components/Context';
+import Loading from "../../components/Loading";
 
 const Wrapper = styled.div`
 padding: 0 30px;
@@ -25,6 +26,7 @@ function Home() {
   const [modal, setModal] = useState(false);
   const [modalNews, setModalNews] = useState([]);
   let { category } = useParams();
+  const [loading, setLoading] = useState(false);
 
   async function getNews(category) {
     try {
@@ -43,6 +45,7 @@ function Home() {
   }
 
   useEffect(() => {
+    setLoading(true);
     if (category) {
       getNews(category)
         .then(res => setNews(res))
@@ -50,6 +53,9 @@ function Home() {
       getNews()
         .then(res => setNews(res))
     }
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }, [category])
 
   return (
@@ -59,7 +65,8 @@ function Home() {
         <Wrapper>
           <Header />
           <NewsContainer>
-            {news?.map((item, index) =>
+            {loading && <Loading />}
+            {!loading && news?.map((item, index) =>
               <BricksView key={index} news={item} />
             )}
           </NewsContainer>
