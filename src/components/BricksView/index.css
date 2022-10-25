@@ -1,0 +1,7 @@
+.lazy-load-image-background.blur.lazy-load-image-loaded {
+    opacity: 0.7 !important;
+}
+
+.lazy-load-image-background.opacity.lazy-load-image-loaded {
+    opacity: 0.7 !important;
+}

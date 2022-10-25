@@ -31,6 +31,16 @@ text-overflow:ellipsis;
 margin-bottom: 20px;
 `
 
+const LazyPicture = styled(LazyLoadImage)`
+  object-fit: cover;
+  object-position: top;
+  cursor: pointer;
+  opacity: 0.7 !important;
+  &:hover {
+    opacity: 1 !important;
+  }
+`;
+
 const PublishtAt = styled.div`
 text-align: right;
 font-size: 0.8rem;
@@ -54,11 +64,11 @@ function BricksView(item) {
 
   return (
     <Item>
-      <LazyLoadImage
+      <LazyPicture
+        className='lazy-img'
         src={news.urlToImage} onClick={() => { setModal(!modal); setModalNews([news]); }}
         width={"100%"}
         height={200}
-        style={{ objectFit: 'cover', objectPosition: 'top' }}
         alt="Image Alt"
         threshold={500}
         placeholderSrc={PlaceholderImage}
